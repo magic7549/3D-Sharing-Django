@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load date_filter %}
+{% block content %}
+<div class="container-fluid contest-background">
+    <!-- message 표시 -->
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    </script>
+    {% endif %}
+    <div class="swiper contest_swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="contest-main text-center">
+                    <p class="title">모델링 콘테스트</p>
+                    <p class="description">다른 참가자들과 다양한 주제로 창작하고 자신을 증명하세요!</p>
+                    <button type="button" class="btn btn-outline-light btn-lg">참가하기</button>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="contest-previous">
+                    <div style="margin-bottom: 50px;">
+                        <p class="title">이전 콘테스트 우승 작품</p>
+                        <p class="description">이전 콘테스트에서 우승한 작품을 확인해보세요!</p>
+                    </div>
+                    {% if previous_contest %}
+                    <div class="swiper previous-swiper">
+                        <div class="swiper-wrapper">
+                            {% for model in previous_contest %}
+                            <div class="swiper-slide previous-slide">
+                                <div class="previous-box" onclick="window.location.href='{% url 'modeling:detail' model.contest_info.modeling.id %}'">
+                                    <div class="title">제 {{ model.contest_info.round_info.round_num }}회<br>콘테스트 우승</div>
+                                    <div class="thumbnail"><img src="{{ model.contest_info.modeling.thumbnail.url }}"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <br><br><br><br><br><br>
+                    <p style="color: #FFF; font-size: 20px;">이전 콘테스트 우승 작품이 없습니다.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="contest-vote text-center">
+                    <div style="margin-bottom: 50px;">
+                        <p class="title">제 {{ current_round_info.round_num }}회 콘테스트</p>
+                        <p class="date">신청 기간 : {{ current_round_info.start_date|date:"Y년 m월 d일" }} ~ {{ current_round_info.vote_date|subtract_days:1|date:"Y년 m월 d일" }}</p>
+                        <p class="date">투표 기간 : {{ current_round_info.vote_date|date:"Y년 m월 d일" }} ~ {{ current_round_info.vote_date|add_days:6|date:"Y년 m월 d일" }} </p>
+                        {% if days_until_vote > 0 %}
+                        <button type="button" class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#contestModal">참가하기</button>
+                        {% endif %}
+                    </div>
+                    {% if current_models %}
+                    <div class="swiper current_models_swiper">
+                        <div class="swiper-wrapper">
+                            {% for model in current_models %}
+                            <div class="swiper-slide current_models-slide">
+                                <div class="current_models_box">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="thumbnail"><img src="{{ model.modeling.thumbnail.url }}"></div>
+                                        </div>
+                                        <div class="col d-flex align-items-start flex-column">
+                                            <div class="title">{{ model.modeling.title }}</div>
+                                            <div class="author">{{ model.modeling.author }}</div>
+                                            <div class="mt-auto">
+                                                <p>
+                                                    <a href="{% url 'modeling:detail' model.modeling.id %}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">자세히보기</a>&nbsp;&nbsp;
+                                                    {% if days_until_vote <= 0 %}
+                                                    <a href="{% url 'contest:contest_vote' model.modeling.id %}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">추천 {{ model.voter.count }}</a>
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-scrollbar horizontal-scrollbar"></div>
+                    </div>
+                    {% else %}
+                    <br><br><br><br><br><br>
+                    <p style="color: #FFF; font-size: 20px;">현재 참가한 모델이 없습니다.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination vertical-pagination"></div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="contestModal" tabindex="-1" aria-labelledby="contestModalLabel" aria-hidden="true" data-bs-theme="dark">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="contestModalLabel">콘테스트 참가하기</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                {% if my_models %}
+                <select class="form-select" id="registerContest">
+                    <option value="-1" selected>참가할 모델을 선택해주세요.</option>
+                    {% for my_model in my_models %}
+                    <option value="{{ my_model.id }}">{{ my_model.title }}</option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                <div>등록된 모델이 없습니다.</div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" onclick="RegisterContest();">신청</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script type='text/javascript'>
+    var pageSwiper = new Swiper(".contest_swiper", {
+        direction: "vertical",
+        slidesPerView: 1,
+        spaceBetween: 30,
+        speed: 800,
+        mousewheel: true,
+        keyboard: { enabled: true, },
+        pagination: {
+          el: ".vertical-pagination",
+          clickable: true,
+        },
+    });
+
+    var previous_swiper = new Swiper(".current_models_swiper", {
+        slidesPerView: "auto",
+        spaceBetween: 30,
+        grabCursor: true,
+        centeredSlides: true,
+        keyboard: { enabled: true, },
+    });
+
+    function UpdateSwiper() {
+        containerWidth = document.querySelector('.current_models_swiper').clientWidth;
+        containerHeight = document.querySelector('.current_models_swiper').clientHeight;
+
+        if (typeof current_swiper !== 'undefined' && current_swiper !== null)
+            current_swiper.destroy();
+
+        var rowNum = (containerHeight <= 610 || containerWidth <= 750) ? 1 : 2;
+
+        current_swiper = new Swiper(".current_models_swiper", {
+            slidesPerView: "auto",
+            grid: { rows: rowNum },
+            spaceBetween: 30,
+            grabCursor: true,
+            centeredSlides: true,
+            scrollbar: { el: ".horizontal-scrollbar", hide: true },
+            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev", },
+            keyboard: { enabled: true, },
+        });
+    }
+    
+    // 코드의 초기 실행
+    UpdateSwiper();
+    
+    // 리사이즈 이벤트 리스너 추가
+    window.addEventListener('resize', UpdateSwiper);
+
+    function RegisterContest() {
+        var model = document.getElementById("registerContest");
+		var value = (model.options[model.selectedIndex].value);
+
+        if (value != "-1")
+            window.location.href = "{% url 'contest:registerContest' modeling_id='0' %}".replace('0', value);
+        else
+            alert("참가할 모델을 선택해주세요.");
+    }
+</script>
+{% endblock %}

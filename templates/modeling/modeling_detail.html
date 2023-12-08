@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-lg my-5 bg-content">
+    <!-- message 표시 -->
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    </script>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6 text-md-start">
+            <figure class="figure" style="width: 100%;">
+                <div class="ratio ratio-1x1 detail-thumbnail">
+                    <img src="{{ modeling.thumbnail.url }}">
+                    <button class="overlay-button" type="button" data-bs-toggle="modal" data-bs-target="#modelingViewModal">Open</button>
+                </div>
+                <figcaption class="figure-caption">이미지를 클릭해서 자세히 확인하세요.</figcaption>
+            </figure>
+        </div>
+
+        <div class="col-md-6 text-md-start">
+            <p class="modeling-extension">{{ modeling.model_extension }}</p>
+            <p class="modeling-title">{{ modeling.title }}</p>
+            <p class="modeling-author">제작자 : {{ modeling.author }}</p>
+            <p class="modeling-date">게시일 : {{ modeling.create_date }}</p>
+            {% if modeling.modify_date %}<p class="modeling-modify-date">수정일 : {{ modeling.modify_date }}</p>{% endif %}
+            <p class="modeling-description">설명 :<br>{{ modeling.description }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-md-end">
+            <a href="{{ modeling.model_file.url }}" class="btn btn-outline-primary" download>다운로드</a>
+            <a href="javascript:void(0)" data-uri="{% url 'modeling:modeling_vote' modeling.id %}" class="recommend btn btn-outline-success">
+                추천 <span class="badge rounded-pill bg-success">{{ modeling.voter.count }}</span>
+            </a>
+            {% if request.user == modeling.author %}
+                <a href="{% url 'modeling:modeling_modify' modeling.id %}" class="btn btn-outline-secondary">수정</a>
+                <a href="javascript:void(0)" class="delete btn btn-outline-danger" data-uri="{% url 'modeling:modeling_delete' modeling.id %}">삭제</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr style="height: 2px; background: #7B7B7B;">
+
+    <!-- 댓글 등록 -->
+    <div class="my-3 py-2" style="margin-left: 10px;">
+        <span style="font-size: 18px; font-weight: 700;">댓글</span>
+        <span style="font-size: 18px; font-weight: 700; color: #0d6efd;">{{ modeling.comment_set.count }}</span>
+    </div>
+    <form action="{% url 'modeling:comment_create' modeling.id %}" method="post" class="my-3">
+        {% csrf_token %}
+        <!-- 오류표시 Start -->
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <div>
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- 오류표시 End -->
+        <div class="mb-3">
+            <textarea {% if not user.is_authenticated %}disabled{% endif %}
+                onkeydown="resize(this)" onkeyup="resize(this)" wrap="hard"
+                name="content" class="form-control comment-box"
+                rows="1" cols="20" style="resize: none;" placeholder="댓글 입력하기.......">{% if not user.is_authenticated %}로그인 후 작성이 가능합니다...{% endif %}</textarea>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-md-end">
+                <input type="submit" value="답변등록" class="btn btn-primary" style="margin-bottom: 32px;">
+            </div>
+        </div>
+    </form>
+    <!-- 댓글 목록 -->
+    {% for comment in modeling.comment_set.all %}
+    <div class="mb-3 comment-box">
+        <p class="comment-author">
+            <b>{{ comment.author }}</b>
+            <span class="comment-date">
+                {{ comment.create_date }} 작성
+                {% if comment.modify_date %}| {{ comment.modify_date }} 수정{% endif %}
+            </span>
+        </p>
+        <p class="comment-content">
+            {{ comment.content|linebreaksbr }}
+        </p>
+        <div class="row">
+            <div class="col-md-6 text-md-start">
+                <a href="javascript:void(0)" class="recommend link-secondary link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" data-uri="{% url 'modeling:comment_vote' comment.id %}">
+                    추천 {{ comment.voter.count }}
+                </a>
+            </div>
+            <div class="col-md-6 text-md-end">
+                {% if request.user == comment.author %}
+                <a href="{% url 'modeling:comment_modify' comment.id %}" class="link-secondary link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">수정</a>
+                <a href="javascript:void(0)" class="delete link-danger link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" data-uri="{% url 'modeling:comment_delete' comment.id %}">삭제</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="modelingViewModal" tabindex="-1" aria-labelledby="modelingViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modelingViewModalLabel">{{ modeling.title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="model-container" class="ratio ratio-1x1"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        let camera, scene, renderer;
+        const clock = new THREE.Clock();
+        let mixer;
+
+        function init() {
+            const container = document.getElementById('model-container');
+            const width = container.getBoundingClientRect().width; // 가로 크기
+            const height = container.getBoundingClientRect().height; // 세로 크기
+
+            camera = new THREE.PerspectiveCamera( 45, width / height, 1, 20000 );
+            camera.position.set( 500, 500, 500 );
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color( 0xa0a0a0 );
+
+            const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444, 5 );
+            hemiLight.position.set( 0, 200, 0 );
+            scene.add( hemiLight );
+
+            const dirLight = new THREE.DirectionalLight( 0xffffff, 5 );
+            dirLight.position.set( 0, 200, 100 );
+            dirLight.castShadow = true;
+            dirLight.shadow.camera.top = 180;
+            dirLight.shadow.camera.bottom = - 100;
+            dirLight.shadow.camera.left = - 120;
+            dirLight.shadow.camera.right = 120;
+            scene.add( dirLight );
+
+            // 모델링
+            {% if modeling.model_extension == "fbx" %}
+            const loader = new FBXLoader();
+            loader.load( '{{ modeling.model_file.url }}', function ( object ) {
+                object.traverse( function ( child ) {
+                    if ( child.isMesh ) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                } );
+                scene.add( object );
+                setSize(object);
+            } );
+            {% elif modeling.model_extension == "glb" %}
+            const loader = new GLTFLoader();
+            loader.load( '{{ modeling.model_file.url }}', function ( object ) {
+                const model = object.scene;
+				scene.add( model );
+                setSize(model)
+            } );
+            {% endif %}
+            
+
+            renderer = new THREE.WebGLRenderer( { antialias: true } );
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize( width, height );
+            renderer.shadowMap.enabled = true;
+            container.appendChild( renderer.domElement );
+
+            const controls = new OrbitControls( camera, renderer.domElement );
+            controls.target.set( 0, 100, 0 );
+            controls.update();
+
+            window.addEventListener( 'resize', onWindowResize );
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('model-container');
+            const width = container.getBoundingClientRect().width; // 가로 크기
+            const height = container.getBoundingClientRect().height; // 세로 크기
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize( width, height );
+        }
+
+        function animate() {
+            requestAnimationFrame( animate );
+            renderer.render( scene, camera );
+        }
+
+        function setSize(object) {
+            // 모델 사이즈 구하기
+            const box = new THREE.Box3().setFromObject(object);
+            const size = new THREE.Vector3()
+            box.getSize(size)
+
+            console.log(size);
+
+            // 모델 스케일을 400으로
+            const maxValue = Math.max(size.x, size.y, size.z);
+            const divideValue = 400 / maxValue;
+            console.log(size.x * divideValue);
+            object.scale.set(divideValue, divideValue, divideValue); 
+        }
+
+        // 모달이 열릴 때 init() 함수 호출
+        const modal = document.getElementById('modelingViewModal');
+        modal.addEventListener('shown.bs.modal', function () {
+            console.log("dd");
+            init();
+            animate();
+        });
+    </script>
+</div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+
+    function resize(obj) {
+        obj.style.height = 'auto';
+        obj.style.height = obj.scrollHeight + 'px';
+    }
+</script>
+{% endblock %}

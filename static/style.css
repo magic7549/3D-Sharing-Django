@@ -1,0 +1,382 @@
+.bg-content {
+    padding: 30px; 
+    background: #FFF; 
+    box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.25);
+}
+
+.search_group {
+    position: relative;
+}
+
+.search_box {
+    border-radius: 50px;
+    border: 4px solid #CDCDCD;  
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
+}
+
+.search_button {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    top: 7px;
+    right: 22px;
+    border: none;
+    border-radius: 5px;
+    background: #C2C2C2;
+    box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.search_button:hover {
+    background: #696969;
+}
+
+.search_button:active {
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.search_button span {
+    color: #FFF;
+}
+
+.btn-write {
+    background: #8CB6F6;
+    border-color: #8CB6F6;
+}
+
+.post-title {
+    margin-left: 10px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.post-author {
+    margin-left: 10px;
+    color: #7B7B7B;
+    font-size: 14px;
+}
+
+.post-date {
+    margin-left: 10px;
+    color: #7B7B7B;
+    font-size: 14px;
+}
+
+.post-content {
+    margin-left: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.comment-box {
+    padding: 10px;
+    border-radius: 16px;
+    border: 3px solid #BCBCBC;
+}
+
+.comment-author {
+    margin-bottom: 10px;
+}
+
+.comment-content {
+    margin-bottom: 10px;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #7C7C7C;
+}
+
+.modeling-extension {
+    color: #7B7B7B;
+    font-size: 14px;
+    margin: 0;
+}
+
+.modeling-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modeling-author {
+    color: #7B7B7B;
+    font-size: 14px;
+    margin: 0;
+}
+
+.modeling-date {
+    color: #7B7B7B;
+    font-size: 14px;
+    margin: 0;
+}
+
+.modeling-modify-date {
+    color: #7B7B7B;
+    font-size: 14px;
+    margin: 0;
+}
+
+.modeling-description {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.detail-thumbnail {
+    position: relative;
+    display: inline-block;
+}
+
+.detail-thumbnail img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.overlay-button {
+    position: absolute;
+    top: 50%; /* 이미지 중앙에 위치 */
+    left: 50%; /* 이미지 중앙에 위치 */
+    transform: translate(-50%, -50%); /* 중앙 정렬 */
+    background-color: rgba(0, 0, 0, 0.7); /* 배경 색상 */
+    color: white; /* 글자색 */
+    padding: 10px 20px; /* 패딩 설정 */
+    border: none;
+    cursor: pointer;
+    display: none; /* 기본적으로 숨김 */
+}
+
+.detail-thumbnail:hover .overlay-button {
+    display: block;
+}
+
+.card-img-top {
+    height: 115px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.card-title {
+    margin: 0;
+}
+
+.contest-background {
+    width: 100%;
+    height: calc(100vh - 77px);
+    background: url('/static/image/background.png');
+    background-attachment: fixed;
+}
+
+.contest_swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.contest-main {
+    margin-top: 50px;
+}
+
+.contest-main > .title {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.contest-main > .description {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.contest-previous {
+    padding-top: 50px;
+}
+
+.contest-previous .title {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.contest-previous .description {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.previous-swiper {
+    width: 95%;
+    height: 420px;
+}
+
+.previous-slide {
+    width: 300px !important;
+    height: 354px !important;
+}
+
+.previous-box {
+    width: 100%;
+    height: 100%;
+    border-radius: 23px;
+    background: rgba(30, 30, 30, 0.81); 
+    padding: 20px 40px 40px 40px;
+    cursor : pointer;
+}
+
+.previous-box .title {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.previous-box .thumbnail {
+    width: 220px;
+    height: 220px;  
+}
+
+.previous-box .thumbnail > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 23px;
+}
+
+.contest-vote {
+    height: 100vh;
+    margin-top: 50px;
+}
+
+.contest-vote > div > .title {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.contest-vote > div > .date {
+    color: #cdcdcd;
+    text-align: center;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.current_models_box {
+    width: 100%;
+    height: 100%;
+    border-radius: 23px;
+    background: rgba(30, 30, 30, 0.81); 
+    padding: 40px;
+}
+
+.current_models_box .thumbnail {
+    width: 210px;
+    height: 210px;  
+}
+
+.current_models_box .thumbnail > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 23px;
+}
+
+.current_models_box .title {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.current_models_box .author {
+    color: #9B9B9B;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.current_models_swiper {
+    width: 95%;
+    min-height: 300px;
+    max-height: 650px;
+    height: calc(100vh - 412px);
+}
+
+.swiper-pagination-bullet {
+    width: 14px !important;
+    height: 14px !important;
+    background-color: aliceblue !important;
+}
+
+.swiper-scrollbar {
+    background-color: #696969 !important;
+}
+
+.swiper-scrollbar-drag {
+    background-color: aliceblue !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: #fff;
+  color: black !important;
+  opacity: 0.5;
+  padding: 15px 5px;
+  border-radius: 20px;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}
+
+.current_models-slide {
+    width: 700px !important;
+    height: 288px !important;
+}
+
+@media (max-width: 750px) {
+    .current_models-slide {
+        width: 290px !important;
+        height: 440px !important;
+    }
+}
+
+#contestModal .modal-content {
+    color: white;
+}
