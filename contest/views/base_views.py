@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -21,7 +22,6 @@ def index(request):
         days_until_vote = (current_round_info.vote_date - current_date).days
         days_until_end = (current_round_info.end_date - current_date).days
 
-    current_models = Contest.objects.filter(round_info=current_round_info)
     previous_contest = PreviousContest.objects.all()
     my_models = Modeling.objects.filter(author=request.user)
 
@@ -29,7 +29,6 @@ def index(request):
         'current_round_info': current_round_info,
         'days_until_vote': days_until_vote,
         'days_until_end': days_until_end,
-        'current_models': current_models,  # 대회를 컨텍스트에 전달
         'previous_contest': previous_contest,
         'my_models': my_models,
     }
@@ -73,3 +72,16 @@ def contest_vote(request, modeling_id):
         messages.error(request, '해당 모델이 대회에 등록되어 있지 않습니다.')
         
     return redirect('contest:index')
+
+
+@login_required(login_url='common:login')
+def get_data(request, offset):
+    current_round_info = ContestRoundInfo.objects.latest('round_num')
+    current_date = timezone.now().date()
+    days_until_vote = (current_round_info.vote_date - current_date).days
+
+    offset = int(offset)
+    data = Contest.objects.filter(round_info=current_round_info)[offset:offset+3]
+    data_list = [{'id': item.modeling.id, 'title': item.modeling.title, 'author': item.modeling.author.username, 'thumbnail': item.modeling.thumbnail.url, 'days_until_vote': days_until_vote, 'voter_count': item.voter.count()} for item in data]
+
+    return JsonResponse({'data': data_list})
