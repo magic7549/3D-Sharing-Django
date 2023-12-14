@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'contest.apps.ContestConfig',
     'modeling.apps.ModelingConfig',
     'community.apps.CommunityConfig',
+    'mypage.apps.MypageConfig',
     'common.apps.CommonConfig',
     'django.contrib.admin',
     'django.contrib.auth',

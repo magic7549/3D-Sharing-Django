@@ -224,19 +224,15 @@
             const size = new THREE.Vector3()
             box.getSize(size)
 
-            console.log(size);
-
             // 모델 스케일을 400으로
             const maxValue = Math.max(size.x, size.y, size.z);
             const divideValue = 400 / maxValue;
-            console.log(size.x * divideValue);
             object.scale.set(divideValue, divideValue, divideValue); 
         }
 
         // 모달이 열릴 때 init() 함수 호출
         const modal = document.getElementById('modelingViewModal');
         modal.addEventListener('shown.bs.modal', function () {
-            console.log("dd");
             init();
             animate();
         });

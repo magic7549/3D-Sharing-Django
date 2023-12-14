@@ -14,7 +14,7 @@
         <div class="contest-main text-center">
             <p class="title">모델링 콘테스트</p>
             <p class="description">다른 참가자들과 다양한 주제로 창작하고 자신을 증명하세요!</p>
-            <button type="button" class="btn btn-outline-light btn-lg">참가하기</button>
+            <button type="button" class="btn btn-outline-light btn-lg" onclick="location.href='#contest-vote-container'">▼</button>
         </div>
         <div class="contest-previous">
             <div style="margin-bottom: 50px;">
@@ -40,7 +40,7 @@
             {% endif %}
         </div>
         <div class="contest-vote text-center">
-            <div style="margin-bottom: 50px;">
+            <div style="margin-bottom: 50px;" id="contest-vote-container">
                 <p class="title">제 {{ current_round_info.round_num }}회 콘테스트</p>
                 <p class="date">신청 기간 : {{ current_round_info.start_date|date:"Y년 m월 d일" }} ~ {{ current_round_info.vote_date|subtract_days:1|date:"Y년 m월 d일" }}</p>
                 <p class="date">투표 기간 : {{ current_round_info.vote_date|date:"Y년 m월 d일" }} ~ {{ current_round_info.vote_date|add_days:6|date:"Y년 m월 d일" }} </p>
@@ -120,7 +120,7 @@
                     data.data.forEach(item => {
                         appendModel(item);
                     });
-                    offset += 3;  // 3개씩 로드
+                    offset += 10;  // 10개씩 로드
                 }
             }
         });
@@ -139,7 +139,7 @@
                     <div class="mt-auto">
                         <p>
                             <a href="/modeling/${modelData.id}/" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">자세히보기</a>&nbsp;&nbsp;
-                            ${modelData.days_until_vote <= 0 ? `<a href="/contest/vote/${modelData.id}/" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">추천 ${modelData.voter_count}</a>` : ''}
+                            ${modelData.days_until_vote <= 0 ? `<a href="/contest/vote/${modelData.id}/" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">투표 ${modelData.voter_count}</a>` : ''}
                         </p>
                     </div>
                 </div>
@@ -153,14 +153,12 @@
 
     // 페이지 로드 시 초기 데이터 로드
     $(document).ready(function () {
-        console.log("init");
         loadData();
     });
 
     // 스크롤 이벤트 감지
     $(window).scroll(function () {
         if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-            console.log("scroll");
             loadData();
         }
     });

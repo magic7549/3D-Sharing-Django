@@ -1,6 +1,5 @@
 from django import forms
 from community.models import Post, Comment
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class PostForm(forms.ModelForm):
     class Meta:

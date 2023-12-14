@@ -9,6 +9,7 @@ urlpatterns = [
     path('contest/', include('contest.urls')),
     path('modeling/', include('modeling.urls')),
     path('community/', include('community.urls')),
+    path('mypage/', include('mypage.urls')),
     path('common/', include('common.urls')),
     path('', views.home, name='home'),
     path('ckeditor/', include('ckeditor_uploader.urls')),

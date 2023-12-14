@@ -64,10 +64,10 @@ def contest_vote(request, modeling_id):
         contest_instance = current_models.first()
 
         if request.user == contest_instance.modeling.author:
-            messages.error(request, '본인이 작성한 모델은 추천할 수 없습니다.')
+            messages.error(request, '본인이 작성한 모델은 투표할 수 없습니다.')
         else:
             contest_instance.voter.add(request.user)
-            messages.success(request, '추천하였습니다.')
+            messages.success(request, '투표하였습니다.')
     else:
         messages.error(request, '해당 모델이 대회에 등록되어 있지 않습니다.')
         
@@ -81,7 +81,7 @@ def get_data(request, offset):
     days_until_vote = (current_round_info.vote_date - current_date).days
 
     offset = int(offset)
-    data = Contest.objects.filter(round_info=current_round_info)[offset:offset+3]
+    data = Contest.objects.filter(round_info=current_round_info)[offset:offset+10]
     data_list = [{'id': item.modeling.id, 'title': item.modeling.title, 'author': item.modeling.author.username, 'thumbnail': item.modeling.thumbnail.url, 'days_until_vote': days_until_vote, 'voter_count': item.voter.count()} for item in data]
 
     return JsonResponse({'data': data_list})

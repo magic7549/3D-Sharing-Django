@@ -168,7 +168,7 @@ body {
     margin: 0;
 }
 
-/* ============== Contest ============== */
+/* ======================================================== Contest ======================================================== */
 
 .contest-background {
     width: 100%;
@@ -335,4 +335,52 @@ body {
 
 #contestModal .modal-content {
     color: white;
+}
+
+/* ======================================================== Mypage ======================================================== */
+.mypage-side-menu .mypage-side-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    padding: 8px;
+}
+
+.mypage-side-menu .nav-underline {
+    gap: 2px !important;
+}
+
+.mypage-side-menu .nav-link {
+    color: #333333 !important;
+}
+
+.mypage-content {
+    margin-left: 30px;
+}
+
+.mypage-content .mypage-content-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    padding: 8px;
+}
+
+.mypage-content-main {
+    padding: 8px;
+}
+
+.mypage-content-main .normal-font {
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }

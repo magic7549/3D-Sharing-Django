@@ -33,8 +33,7 @@ def create_new_round():
             
             for previous_winner in previous_winners:
                 PreviousContest.objects.create(
-                    round_info=current_round_info,
-                    modeling=previous_winner.modeling,
+                    contest_info = previous_winner
                 )
 
         # 새로운 회차의 start_date, vote_date, end_date를 계산합니다.
