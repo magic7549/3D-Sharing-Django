@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container-lg my-5 bg-content">
+    {% if messages %}
+    <!-- message 표시 -->
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    </script>
+    {% endif %}
     <form method="post" action="{% url 'common:login' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}"> <!-- 로그인 성공후 이동되는 URL -->

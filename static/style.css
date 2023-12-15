@@ -384,3 +384,20 @@ body {
     font-weight: 400;
     line-height: normal;
 }
+
+.mypage-content-main .nav-link {
+    color: #333333 !important;
+}
+
+.mypage-content-main .card-img-top {
+    height: 115px;
+    object-fit: cover;
+}
+
+.mypage-content-main .card-body {
+    padding: 10px;
+}
+
+.mypage-content-main .card-title {
+    margin: 0;
+}
