@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('password/', views.change_password, name='change_password'),
     path('delete/', views.delete, name='delete'),
-    path('post/', views.my_post, name='post'),
+    path('modeling/', views.my_modeling, name='modeling'),
+    path('community/', views.my_community, name='community'),
 ]

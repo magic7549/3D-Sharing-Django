@@ -1,0 +1,90 @@
+{% extends "mypage/mypage_post.html" %}
+{% block mypage_post_content %}
+<table class="table table-hover">
+    <thead>
+    <tr class="text-center">
+        <th>번호</th>
+        <th style="width:50%">제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if post_list %}
+    {% for post in post_list %}
+    <tr class="text-center" onClick="location.href='{% url 'community:detail' post.id %}'">
+        <td>
+            {{ post.id }}
+        </td>
+        <td class="text-start">
+            <span>{{ post.title }}</span>
+            {% if post.comment_set.count > 0 %}
+            <span class="text-danger small mx-2">{{ post.comment_set.count }}</span>
+            {% endif %}
+        </td>
+        <td>
+            {{ post.author.username }}
+        </td>
+        <td>
+            {{ post.create_date }}
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="4">질문이 없습니다.</td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
+<ul class="pagination justify-content-center">
+    <!-- 이전 페이지 버튼 -->
+    {% if post_list.has_previous %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ post_list.previous_page_number }}" href="javascript:void(0)">이전</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+    </li>
+    {% endif %}
+    <!-- 페이지 리스트 -->
+    {% for page_number in post_list.paginator.page_range %}
+    {% if page_number >= post_list.number|add:-5 and page_number <= post_list.number|add:5 %}
+    {% if page_number == post_list.number %}
+    <li class="page-item active" aria-current="page">
+        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+    </li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    <!-- 다음 페이지 버튼 -->
+    {% if post_list.has_next %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ post_list.next_page_number }}" href="javascript:void(0)">다음</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+    </li>
+    {% endif %}
+</ul>
+<form id="searchForm" method="get" action="{% url 'mypage:community' %}">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+</form>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+    const page_elements = document.getElementsByClassName("page-link");
+    Array.from(page_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('page').value = this.dataset.page;
+            document.getElementById('searchForm').submit();
+        });
+    });
+</script>
+{% endblock %}

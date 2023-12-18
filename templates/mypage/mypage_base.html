@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-lg my-5 bg-content ">
+    <div class="d-flex align-items-start">
+        <div class="mypage-side-menu">
+            <div class="mypage-side-title">
+                마이페이지
+            </div>
+            <hr style="height: 2px; background: #7B7B7B; margin: 6px 0px;">
+            <div class="nav flex-column nav-underline" id="v-pills-tab">
+                {% with request_path=request.path %}
+                <button class="nav-link {% if '/mypage/password/' in request_path %}active{% endif %}" type="button" onclick="location.href='{% url 'mypage:change_password' %}';">비밀번호 변경</button>
+                <button class="nav-link {% if '/mypage/delete/' in request_path %}active{% endif %}" type="button" onclick="location.href='{% url 'mypage:delete' %}';">회원 탈퇴</button>
+                <button class="nav-link {% if '/mypage/modeling/' in request_path or '/mypage/community/' in request_path %}active{% endif %}" type="button" onclick="location.href='{% url 'mypage:modeling' %}';">작성 글</button>
+                {% endwith %}
+            </div>
+        </div>
+        <div class="mypage-content flex-fill">
+            {% block mypage_content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

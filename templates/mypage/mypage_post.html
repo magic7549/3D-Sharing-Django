@@ -1,101 +1,33 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container-lg my-5 bg-content ">
-    <div class="d-flex align-items-start">
-        <div class="mypage-side-menu">
-            <div class="mypage-side-title">
-                마이페이지
-            </div>
-            <hr style="height: 2px; background: #7B7B7B; margin: 6px 0px;">
-            <div class="nav flex-column nav-underline" id="v-pills-tab">
-                <button class="nav-link" type="button" onclick="location.href='{% url 'mypage:change_password' %}';">비밀번호 변경</button>
-                <button class="nav-link" type="button" onclick="location.href='{% url 'mypage:delete' %}';">회원 탈퇴</button>
-                <button class="nav-link active" type="button" onclick="location.href='{% url 'mypage:post' %}';">작성 글</button>
-            </div>
-        </div>
-        <div class="mypage-content flex-fill">
-            <div class="mypage-content-title">
-                작성 글
-            </div>
+{% extends "mypage/mypage_base.html" %}
+{% block mypage_content %}
+<div class="mypage-content-title">
+    작성 글
+</div>
 
-            <hr style="height: 2px; background: #7B7B7B; margin: 6px 0px;">
+<hr style="height: 2px; background: #7B7B7B; margin: 6px 0px;">
 
-            <div class="mypage-content-main">
-                {% if messages %}
-                <!-- message 표시 -->
-                <script>
-                    {% for message in messages %}
-                        alert("{{ message }}");
-                    {% endfor %}
-                </script>
-                {% endif %}
-                <ul class="nav nav-underline" style="margin-bottom: 20px;">
-                    <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button">Modeling</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button">Community</button>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="home-tab-pane">
-                        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 g-4">
-                            {% if modeling_list %}
-                                {% for modeling in modeling_list %}
-                                    <div class="col">
-                                        <div class="card h-100" style=" cursor: pointer;" onclick="location.href='{% url 'modeling:detail' modeling.id %}'">
-                                            <img src="{{ modeling.thumbnail.url }}" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h6 class="card-title">{{ modeling.title }}</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile-tab-pane">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr class="text-center">
-                                <th>번호</th>
-                                <th style="width:50%">제목</th>
-                                <th>작성자</th>
-                                <th>작성일</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% if post_list %}
-                            {% for post in post_list %}
-                            <tr class="text-center" onClick="location.href='{% url 'community:detail' post.id %}'">
-                                <td>
-                                    {{ post.id }}
-                                </td>
-                                <td class="text-start">
-                                    <span>{{ post.title }}</span>
-                                    {% if post.comment_set.count > 0 %}
-                                    <span class="text-danger small mx-2">{{ post.comment_set.count }}</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {{ post.author.username }}
-                                </td>
-                                <td>
-                                    {{ post.create_date }}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr>
-                                <td colspan="4">질문이 없습니다.</td>
-                            </tr>
-                            {% endif %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="mypage-content-main">
+    {% if messages %}
+    <!-- message 표시 -->
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    </script>
+    {% endif %}
+    <ul class="nav nav-underline" style="margin-bottom: 20px;">
+        {% with request_path=request.path %}
+        <li class="nav-item">
+            <button class="nav-link {% if '/mypage/modeling/' in request_path %}active{% endif %}" onclick="location.href='{% url 'mypage:modeling' %}';" type="button">Modeling</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if '/mypage/community/' in request_path %}active{% endif %}" onclick="location.href='{% url 'mypage:community' %}';" type="button">Community</button>
+        </li>
+        {% endwith %}
+    </ul>
+    <div class="tab-content">
+        {% block mypage_post_content %}
+        {% endblock %}
     </div>
 </div>
 {% endblock %}
