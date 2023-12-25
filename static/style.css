@@ -401,3 +401,145 @@ body {
 .mypage-content-main .card-title {
     margin: 0;
 }
+
+/* ======================================================== Home ======================================================== */
+.home-background {
+    width: 100%;
+    height: calc(100vh - 77px);
+    padding: 0 !important;
+}
+
+.home_swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.home-slide {
+    width: 100%;
+    height: 100%;
+}
+
+.home-intro {
+    background: url('/static/image/cubes.jpg');
+    background-size: cover;
+    height: 100%;
+}
+
+.home-intro .title {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 5.12px;
+}
+
+.home-intro .down  {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 5.12px;
+}
+
+.home-modeling {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    background-color: #F0F0F0;
+}
+
+.home-modeling .title {
+    text-align: center;
+    font-family: Inter;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 5.12px;
+}
+
+.home-modeling .title span {
+    position: relative;
+}
+
+.home-modeling-title-01 {
+    left: -5rem;
+    color: #686868;
+}
+
+.home-modeling-title-02 {
+    left: 10rem;
+    color: #1b1b1b;
+}
+
+.home-modeling .move_btn {
+    width: 213px;
+    height: 64px;
+    margin-top: 10px;
+    border-radius: 49px;
+    border: 7px solid #3b3b3b;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.home-modeling .move_btn span {
+    color: #3b3b3b; 
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.home-community {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    background: url('/static/image/board.jpg');
+    background-size: cover;
+    height: 100%;
+}
+
+.home-community .title {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 5.12px;
+}
+
+.home-community .move_btn {
+    width: 213px;
+    height: 64px;
+    margin-top: 10px;
+    border-radius: 49px;
+    border: 7px solid #E1E1E1;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.home-community .move_btn span {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

@@ -1,6 +1,55 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container-lg my-5 bg-content">
-
+<div class="container-fluid home-background">
+    <div class="swiper home_swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide home-slide">
+                <div class="row home-intro">
+                    <div class="align-self-center title">3D Sharing</div>
+                    <div class="align-self-end down">∨</div>
+                </div>
+            </div>
+            <div class="swiper-slide home-slide">
+                <div class="home-modeling">
+                    <div class="title">
+                        <span class="home-modeling-title-01">3D 모델링 파일을</span>
+                        <br>
+                        <span class="home-modeling-title-02">공유해보아요!</span>
+                    </div>
+                    <div class="move_btn" onClick="location.href={% url 'modeling:index' %}">
+                        <span>Enter</span>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide home-slide">
+                <div class="home-community">
+                    <div class="title">
+                        자유롭게 글을 업로드하세요!
+                    </div>
+                    <div class="move_btn" onClick="location.href={% url 'community:index' %}">
+                        <span>Enter</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination vertical-pagination"></div>
+    </div>
 </div>
+{% endblock %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script type='text/javascript'>
+    var pageSwiper = new Swiper(".home_swiper", {
+        direction: "vertical",
+        slidesPerView: 1,
+        spaceBetween: 30,
+        speed: 800,
+        mousewheel: true,
+        keyboard: { enabled: true, },
+        pagination: {
+          el: ".vertical-pagination",
+          clickable: true,
+        },
+    });
+</script>
 {% endblock %}
