@@ -1,6 +1,6 @@
 # 3D-Sharing-Django
 Django를 이용한 3D 모델링 파일 공유 사이트<br>
-[3D 모델링 공유 사이트.pptx](https://github.com/magic7549/3D-Sharing-Django/files/14001746/3D.pptx)<br>
+[3D 모델링 공유 사이트.pdf](https://github.com/magic7549/3D-Sharing-Django/files/14001753/3D.pdf)<br>
 
 
 <br><br>
